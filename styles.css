@@ -5,42 +5,41 @@ body {
   color: #333;
   display: flex;
   justify-content: center;
-  align-items: center;
   min-height: 100vh;
   transition: all 0.3s ease;
+  padding: 20px;
 }
 
 .container {
-  width: 90%;
-  max-width: 800px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  width: 100%;
+  max-width: 1200px; /* Nearly full width, adjustable */
 }
 
-#note-input, #note-preview {
-  min-height: 400px;
+#note-canvas {
+  min-height: 80vh;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-#note-input {
   background: #fff;
   border: 1px solid #ddd;
-  resize: none;
   font-size: 16px;
+  line-height: 1.6;
   outline: none;
-}
-
-#note-preview {
-  background: #fff;
-  border: 1px solid #ddd;
   overflow-y: auto;
 }
 
+#note-canvas h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+#note-canvas h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
+}
+
 .toolbar {
-  grid-column: span 2;
+  margin-top: 20px;
   text-align: right;
 }
 
@@ -69,15 +68,13 @@ body.dark-mode {
   color: #ddd;
 }
 
-body.dark-mode #note-input,
-body.dark-mode #note-preview {
+body.dark-mode #note-canvas {
   background: #333;
   border-color: #555;
   color: #ddd;
 }
 
-@media (max-width: 600px) {
-  .container {
-    grid-template-columns: 1fr;
-  }
+body.dark-mode #note-canvas h1,
+body.dark-mode #note-canvas h2 {
+  color: #ddd;
 }
