@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Papier Replacement",
+  "version": "1.0",
+  "description": "A simple note-taking Chrome extension with Markdown support.",
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  },
+  "permissions": [
+    "storage"
+  ]
+}
