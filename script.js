@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const noteInput = document.getElementById('note-input');
-  const notePreview = document.getElementById('note-preview');
+  const noteCanvas = document.getElementById('note-canvas');
   const toggleDarkBtn = document.getElementById('toggle-dark');
   const clearNotesBtn = document.getElementById('clear-notes');
   const wordCountSpan = document.getElementById('word-count');
@@ -8,8 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Load saved notes and dark mode preference
   chrome.storage.local.get(['notes', 'darkMode'], (data) => {
     if (data.notes) {
-      noteInput.value = data.notes;
-      renderMarkdown(data.notes);
+      noteCanvas.innerHTML = marked.parse(data.notes);
       updateWordCount(data.notes);
     }
     if (data.darkMode) {
@@ -18,9 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Real-time Markdown rendering and auto-save
-  noteInput.addEventListener('input', () => {
-    const text = noteInput.value;
-    renderMarkdown(text);
+  noteCanvas.addEventListener('input', () => {
+    const text = noteCanvas.innerText; // Get plain text for word count
+    const html = marked.parse(text);  // Convert to HTML with Markdown
+    noteCanvas.innerHTML = html;      // Render HTML back
     updateWordCount(text);
     chrome.storage.local.set({ notes: text });
   });
@@ -35,17 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Clear notes
   clearNotesBtn.addEventListener('click', () => {
     if (confirm('Are you sure you want to clear all notes?')) {
-      noteInput.value = '';
-      notePreview.innerHTML = '';
+      noteCanvas.innerHTML = '';
       wordCountSpan.textContent = '0 words, 0 lines';
       chrome.storage.local.remove('notes');
     }
   });
-
-  // Render Markdown to preview
-  function renderMarkdown(text) {
-    notePreview.innerHTML = marked.parse(text);
-  }
 
   // Update word and line count
   function updateWordCount(text) {
@@ -53,4 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lines = text.split('\n').length;
     wordCountSpan.textContent = `${words} words, ${lines} lines`;
   }
+
+  // Focus on canvas when page loads
+  noteCanvas.focus();
 });
